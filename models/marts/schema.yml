@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: matches
+    columns:
+      - name: match_id
+        data_tests:
+          - unique
+      - name: replay_id
+        data_tests:
+          - unique
+      - name: start_time
+        data_tests:
+          - not_null
+      - name: map
+        data_tests:
+          - not_null
+      - name: team_count
+        data_tests:
+          - not_null
+      - name: team_size
+        data_tests:
+          - not_null
+      - name: game_type
+        data_tests:
+          - not_null
+      - name: winning_team
+        data_tests:
+          - not_null
+      - name: game_duration
+      - name: is_ranked
+        data_tests:
+          - not_null
+      - name: replay_id
+      - name: engine
+      - name: game_version
+      - name: is_public
+        data_tests:
+          - not_null
+
+  - name: match_players
+    columns:
+      - name: match_id
+        data_tests:
+          - not_null
+      - name: team_id
+        data_tests:
+          - not_null
+      - name: user_id
+        data_tests:
+          - not_null
+      - name: party_id
+      - name: win
+        data_tests:
+          - not_null
+      - name: left_after
+      - name: old_skill
+      - name: old_uncertainty
+      - name: new_skill
+      - name: new_uncertainty
+      - name: faction

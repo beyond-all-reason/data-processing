@@ -1,0 +1,12 @@
+bar_data_processing:
+  outputs:
+    prod:
+      type: duckdb
+      path: prod.duckdb
+      threads: 1
+    dev:
+      type: duckdb
+      path: dev.duckdb
+      threads: 1
+
+  target: dev

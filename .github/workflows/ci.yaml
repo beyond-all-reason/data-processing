@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run lint checks
+        run: pre-commit run --all-files
+      - name: Run dbt
+        run: dbt run -t dev
+      - name: Test dbt
+        run: dbt test -t dev

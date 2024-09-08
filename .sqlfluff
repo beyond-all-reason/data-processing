@@ -1,0 +1,20 @@
+[sqlfluff]
+dialect = duckdb
+templater = jinja
+max_line_length = 100
+exclude_rules =
+  capitalisation.identifiers,
+  layout.cte_newline,
+  references.qualification,
+  structure.using,
+processes = 4
+
+[sqlfluff:indentation]
+tab_space_size = 2
+indented_joins = False
+indented_using_on = True
+allow_implicit_indents = True
+indented_ctes = True
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper

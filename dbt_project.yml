@@ -1,0 +1,21 @@
+name: 'bar_data_processing'
+version: '0.0.1'
+profile: 'bar_data_processing'
+
+model-paths: ["models"]
+test-paths: ["tests"]
+asset-paths: ["assets"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  bar_data_processing:
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: external
+      +options:
+        codec: 'zstd'
+        format: 'parquet'

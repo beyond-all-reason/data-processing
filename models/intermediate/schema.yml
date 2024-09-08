@@ -1,0 +1,119 @@
+version: 2
+
+models:
+  - name: tei_matches
+    description: "Teiserver matches"
+    columns:
+      - name: match_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: start_time
+        data_tests:
+          - not_null
+      - name: map
+        data_tests:
+          - not_null
+      - name: team_count
+        data_tests:
+          - not_null
+      - name: team_size
+        data_tests:
+          - not_null
+      - name: game_type
+        data_tests:
+          - not_null
+      - name: is_ranked
+        data_tests:
+          - not_null
+
+  - name: tei_match_memberships
+    data_tests:
+      - unique:
+          column_name: "(match_id || '-' || user_id)"
+
+  - name: tei_match_ratings
+    columns:
+      - name: all_win_same
+        data_tests:
+          - accepted_values:
+              values: [True]
+
+  - name: tei_players
+    description: "Teiserver players for match"
+    columns:
+      - name: match_id
+        data_tests:
+          - not_null
+      - name: team_id
+        # Sad that can be null :(
+      - name: user_id
+        data_tests:
+          - not_null
+
+  - name: replay_matches
+    columns:
+      - name: replay_id
+        data_tests:
+          - unique
+      - name: replay_start_time
+        data_tests:
+          - not_null
+      - name: replay_map
+        data_tests:
+          - not_null
+
+  - name: replay_players
+    columns:
+      - name: replay_id
+        data_tests:
+          - not_null
+      - name: user_id
+        # Can be null :(( because of https://github.com/beyond-all-reason/teiserver/issues/438
+      - name: faction
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["Cortex", "Armada", "Unknown", "Random"]
+
+  - name: tei_replay_map
+    description: Mapping between teiserver matches and replay ids
+    columns:
+      - name: match_id
+        data_tests:
+          - not_null
+          - unique
+      - name: replay_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: valid_matches
+    columns:
+      - name: match_id
+        data_tests:
+          - not_null
+          - unique
+      - name: has_matching_team_count
+        data_tests:
+          - not_null
+      - name: has_null_team_id
+        data_tests:
+          - not_null
+      - name: is_valid
+        data_tests:
+          - not_null
+
+sources:
+  - name: pgdumps
+    meta:
+      external_location: "data_source/{{ target.name }}/{name}.parquet"
+    tables:
+      - name: replay_ally_teams
+      - name: replay_demos
+      - name: replay_maps
+      - name: replay_players
+      - name: teiserver_battle_match_memberships
+      - name: teiserver_battle_matches
+      - name: teiserver_game_rating_logs
