@@ -8,6 +8,11 @@ different sources and creates data dumps.
 At the moment the only functionality is a public dump of the past matches data
 combining information from teiserver and replays databases.
 
+## Access dumps
+
+Automatically generated documentation about accessing dumps generates from this
+repository is available at https://beyond-all-reason.github.io/data-processing/.
+
 ## Development
 
 This project is using [dbt](https://docs.getdbt.com/docs/introduction) for
