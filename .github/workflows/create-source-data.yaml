@@ -1,6 +1,8 @@
-name: Create Source Data
+name: Create Dumps from DBs
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 2,6'
 jobs:
   create-runner:
     permissions:
@@ -28,7 +30,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           image_project: ubuntu-os-cloud
-          image_family: ubuntu-2204-lts
+          image_family: ubuntu-2404-lts-amd64
           machine_zone: europe-west4-b
           machine_type: e2-standard-4
           runner_service_account: ${{ vars.RUNNER_GCP_SERVICE_ACCOUNT }}
@@ -36,8 +38,69 @@ jobs:
           ephemeral: true
           boot_disk_type: pd-ssd
           disk_size: 70GB
-  test:
+  export-pgdumps:
     needs: create-runner
     runs-on: ${{ needs.create-runner.outputs.label }}
     steps:
-      - run: echo "This runs on the GCE VM"
+      # We are running on barebones VM, so there is more scripting involved
+      # then needed if we were running on standard GitHub Actions runner.
+      - name: Checkout source
+        run: |
+          mkdir src
+          cd src
+          git init
+          git remote add origin $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git
+          git fetch origin $GITHUB_REF
+          git reset --hard FETCH_HEAD
+          cd ..
+      - name: Set up PostgreSQL
+        run: |
+          sudo apt-get --yes install postgresql
+          while ! pg_isready; do
+              echo "waiting for postgres..."
+              sleep 1
+          done
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
+      - name: Setup DuckDB
+        run: |
+          sudo apt-get install --yes unzip
+          curl -L https://github.com/duckdb/duckdb/releases/download/v1.1.0/duckdb_cli-linux-amd64.zip > duckdb.zip
+          unzip duckdb.zip duckdb
+          sudo mv duckdb /usr/local/bin
+          export HOME=$(pwd)
+          duckdb :memory: 'INSTALL postgres;'
+      - name: Restore databases
+        run: |
+          function restore {
+            local BACKUP="$(gcloud storage ls gs://$1 | sort -r | head -n 1)"
+            gcloud storage cp "$BACKUP" .
+            psql -c "CREATE DATABASE $2;"
+            time zstdcat "$(basename "$BACKUP")" \
+              | pg_restore -d postgres --clean --create --no-owner --no-privileges
+          }
+
+          restore "$REPLAY_BACKUPS_GCS_BUCKET" bar &
+          restore "$TEISERVER_BACKUPS_GCS_BUCKET" teiserver_prod &
+
+          wait %1 %2
+        env:
+          REPLAY_BACKUPS_GCS_BUCKET: ${{ vars.REPLAY_BACKUPS_GCS_BUCKET }}
+          TEISERVER_BACKUPS_GCS_BUCKET: ${{ vars.TEISERVER_BACKUPS_GCS_BUCKET }}
+          PGPASSWORD: 12345
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+      - name: Export parquet files
+        run: |
+          mkdir data_export
+          export HOME=$(pwd)
+          duckdb < src/scripts/export_prod_data_source.sql
+        env:
+          PGPASSWORD: 12345
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+      - name: Save data export in GCS bucket
+        run: |
+          gcloud config set storage/parallel_composite_upload_compatibility_check False
+          gcloud storage rsync data_export/ gs://$DATA_MART_GCS_BUCKET/pgdumps --recursive --delete-unmatched-destination-objects
+        env:
+          DATA_MART_GCS_BUCKET: ${{ vars.DATA_MART_GCS_BUCKET }}
