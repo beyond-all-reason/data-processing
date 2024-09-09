@@ -1,0 +1,43 @@
+name: Create Source Data
+on:
+  workflow_dispatch:
+jobs:
+  create-runner:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.create-runner.outputs.label }}
+    steps:
+      - name: Create GitHub App installation access token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.GA_APP_ID }}
+          private-key: ${{ secrets.GA_PRIVATE_KEY }}
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+      - name: Create Runner on GCP
+        id: create-runner
+        uses: related-sciences/gce-github-runner@2622dd9ed9e399ae7db9d87f677d14bf128ab768
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          image_project: ubuntu-os-cloud
+          image_family: ubuntu-2204-lts
+          machine_zone: europe-west4-b
+          machine_type: e2-standard-4
+          runner_service_account: ${{ vars.RUNNER_GCP_SERVICE_ACCOUNT }}
+          preemptible: true
+          ephemeral: true
+          boot_disk_type: pd-ssd
+          disk_size: 70GB
+  test:
+    needs: create-runner
+    runs-on: ${{ needs.create-runner.outputs.label }}
+    steps:
+      - run: echo "This runs on the GCE VM"
