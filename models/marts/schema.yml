@@ -2,60 +2,96 @@ version: 2
 
 models:
   - name: matches
+    description: |
+      Contains a list of BAR matches as exported from teiserver and joined
+      with replays data.
     columns:
       - name: match_id
+        description: Unique teiserver side match id
         data_tests:
           - unique
+          - not_null
       - name: replay_id
+        description: |
+          If for a given match we found replay, it contains the replay id used
+          for replay identification e.g. view it on the website:
+          https://www.beyondallreason.info/replays?gameId={replay_id}
         data_tests:
           - unique
       - name: start_time
+        description: UTC time of when the match started
         data_tests:
           - not_null
       - name: map
+        description: Name of the map
         data_tests:
           - not_null
       - name: team_count
+        description: Number of teams that palyed in the game
         data_tests:
           - not_null
       - name: team_size
         data_tests:
           - not_null
       - name: game_type
+        description: Type of the game, it can be Team FFA, Raptors, Duel, Large team etc
         data_tests:
           - not_null
       - name: winning_team
+        description: The team id of the team that won
         data_tests:
           - not_null
       - name: game_duration
+        description: Duration of the game in seconds
       - name: is_ranked
+        description: Whatever the game was ranked or not
         data_tests:
           - not_null
-      - name: replay_id
       - name: engine
+        description: Game engine version that was used
       - name: game_version
+        description: Game version that was used
       - name: is_public
+        description: |
+          Whatever it was a public match or not, pulic dumps contain only public
+          matches.
         data_tests:
           - not_null
 
   - name: match_players
+    description: Contains all the players that played a particular match
     columns:
       - name: match_id
+        description: Match id od the played match
         data_tests:
           - not_null
       - name: team_id
+        description: Team id, all team ids fit in the [0, team_count).
         data_tests:
           - not_null
       - name: user_id
+        description: Teiserver account id of the user
         data_tests:
           - not_null
       - name: party_id
+        description: |
+          If the user was part of a party, contains the unique id of the party
       - name: win
+        description: Boolean representing whatever the player won or not
         data_tests:
           - not_null
       - name: left_after
+        description: Can be null, duration in seconds after player left the game
       - name: old_skill
+        description: Skill (mu) from before the game
       - name: old_uncertainty
+        description: Uncertainty (sigma) from before the game
       - name: new_skill
+        description: Skill (mu) after the game
       - name: new_uncertainty
+        description: Uncertainty (sigma) after the game
       - name: faction
+        description: |
+          Faction that was used, important note is that it can be null, and is
+          also the faction selected in lobby. In additon, faction like Legion
+          are not recognized here. Use with caution, not high quality field.
