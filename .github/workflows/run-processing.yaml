@@ -1,0 +1,90 @@
+name: Run DBT model on prod
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 11 * * 2,6'
+jobs:
+  create-runner:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.create-runner.outputs.label }}
+    steps:
+      - name: Create GitHub App installation access token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.GA_APP_ID }}
+          private-key: ${{ secrets.GA_PRIVATE_KEY }}
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+      - name: Create Runner on GCP
+        id: create-runner
+        uses: related-sciences/gce-github-runner@2622dd9ed9e399ae7db9d87f677d14bf128ab768
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          image_project: ubuntu-os-cloud
+          image_family: ubuntu-2404-lts-amd64
+          machine_zone: europe-west4-b
+          machine_type: e2-standard-4
+          runner_service_account: ${{ vars.RUNNER_GCP_SERVICE_ACCOUNT }}
+          preemptible: true
+          ephemeral: true
+          boot_disk_type: pd-ssd
+          disk_size: 70GB
+  process:
+    needs: create-runner
+    runs-on: ${{ needs.create-runner.outputs.label }}
+    steps:
+      # We are running on barebones VM, so there is more scripting involved
+      # then needed if we were running on standard GitHub Actions runner.
+      - name: Install rclone
+        run: sudo apt-get install --yes rclone
+      - name: Checkout source
+        run: |
+          mkdir src
+          cd src
+          git init
+          git remote add origin $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git
+          git fetch origin $GITHUB_REF
+          git reset --hard FETCH_HEAD
+          cd ..
+      - name: Setup DuckDB
+        run: |
+          sudo apt-get install --yes unzip
+          curl -L https://github.com/duckdb/duckdb/releases/download/v1.1.0/duckdb_cli-linux-amd64.zip > duckdb.zip
+          unzip duckdb.zip duckdb
+          sudo mv duckdb /usr/local/bin
+      - name: Setup Python
+        run: |
+          sudo apt-get install --yes python3-pip python3-venv
+          cd src
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+      - name: Fetch pgdumps
+        run: |
+          gcloud storage rsync gs://data-processing-mart-58413/pgdumps src/data_source/prod
+      - name: Run models
+        run: |
+          cd src && source .venv/bin/activate
+          dbt build -t prod
+      - name: Generate formats
+        run: cd src && duckdb < scripts/build_more_formats.sql
+      - name: Upload dumps
+        run: rclone sync --exclude .gitkeep src/data_export/ :s3:$R2_DATA_MARTS_BUCKET
+        env:
+          R2_DATA_MARTS_BUCKET: ${{ vars.R2_DATA_MARTS_BUCKET }}
+          RCLONE_S3_PROVIDER: Cloudflare
+          RCLONE_S3_ENDPOINT: https://${{ vars.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          RCLONE_S3_ACCESS_KEY_ID: ${{ vars.R2_ACCESS_KEY_ID }}
+          RCLONE_S3_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_KEY_SECRET }}
+          RCLONE_S3_BUCKET_ACL: private
+          RCLONE_S3_CHUNK_SIZE: 20M
+          RCLONE_S3_UPLOAD_CONCURRENCY: 2
