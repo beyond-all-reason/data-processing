@@ -9,7 +9,6 @@ SELECT
   new_team_id AS team_id,
   user_id,
   party_id,
-  win,
   left_after,
   old_skill,
   old_uncertainty,

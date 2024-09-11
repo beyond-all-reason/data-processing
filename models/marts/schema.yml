@@ -76,10 +76,6 @@ models:
       - name: party_id
         description: |
           If the user was part of a party, contains the unique id of the party
-      - name: win
-        description: Boolean representing whatever the player won or not
-        data_tests:
-          - not_null
       - name: left_after
         description: Can be null, duration in seconds after player left the game
       - name: old_skill

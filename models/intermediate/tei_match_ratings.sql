@@ -15,7 +15,6 @@ WITH
         AS old_uncertainty,
       (value::JSON).skill::FLOAT AS new_skill,
       (value::JSON).uncertainty::FLOAT AS new_uncertainty,
-      (value::JSON).skill_change::DOUBLE > 0 AS win,
       CASE WHEN (value::JSON).skill_change::DOUBLE > 0 THEN 1 ELSE -1 END AS win_ord
     FROM {{ ref("tei_matches") }}
     INNER JOIN {{ source('pgdumps', 'teiserver_game_rating_logs') }}
@@ -24,7 +23,6 @@ WITH
 SELECT
   match_id,
   user_id,
-  any_value(win) AS win,
   first(old_skill ORDER BY old_skill * win_ord) AS old_skill,
   first(old_uncertainty ORDER BY old_skill * win_ord) AS old_uncertainty,
   last(new_skill ORDER BY old_skill * win_ord) AS new_skill,
