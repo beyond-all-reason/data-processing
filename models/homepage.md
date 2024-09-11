@@ -17,6 +17,21 @@ For example, to download [`matches`](#!/model/model.bar_data_processing.matches)
 model (data table) in Parquet format, URL is:
 https://data-marts.beyondallreason.dev/matches.parquet
 
+## Data quality
+
+The processing pipeline automatically removes some obviously very bad data (e.g.
+not clear to which team player belongs to), but still due to various bugs in
+teiserver, there are some issues with some small (low hundreds/tens) amount of
+entries in the dataset, for example:
+
+- Teiserver data reports different players vs teams assignments then intended
+- Some player skill is reduced as if it lost even though it won
+
+and likely plenty more.
+
+If someting should be filtered out as bad data: feel free to open a new issue in
+the repository.
+
 ## Schamas
 
 To browse schema of all exported models (data tables) navigate on the left side

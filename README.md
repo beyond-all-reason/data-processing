@@ -1,17 +1,15 @@
 # Data processing
 
-**Work in proress.**
-
-Repository for data transformation workflow that processes BAR data from
-different sources and creates data dumps.
+Repository for [ETL](https://en.wikipedia.org/wiki/Extract%2C_transform%2C_load)
+workflow that processes BAR data from different sources and creates data dumps.
 
 At the moment the only functionality is a public dump of the past matches data
 combining information from teiserver and replays databases.
 
-## Access dumps
+## Data access
 
-Automatically generated documentation about accessing dumps generates from this
-repository is available at https://beyond-all-reason.github.io/data-processing/.
+Documentation about accessing dumps generated with pipeline in this repository
+is available at https://beyond-all-reason.github.io/data-processing/.
 
 ## Development
 
