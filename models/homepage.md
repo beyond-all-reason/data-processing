@@ -26,6 +26,7 @@ entries in the dataset, for example:
 
 - Teiserver data reports different players vs teams assignments then intended
 - Some player skill is reduced as if it lost even though it won
+- Some player's membership is missing in games between 2022-07-03 to 2023-05-15
 
 and likely plenty more.
 
