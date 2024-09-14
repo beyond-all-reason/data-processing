@@ -1,15 +1,37 @@
 # Data processing
 
 Repository for [ETL](https://en.wikipedia.org/wiki/Extract%2C_transform%2C_load)
-workflow that processes BAR data from different sources and creates data dumps.
+workflow that processes BAR data.
 
-At the moment the only functionality is a public dump of the past matches data
-combining information from teiserver and replays databases.
+It periodically produces public dumps of the matches data combining information
+from teiserver and replays database.
 
 ## Data access
 
-Documentation about accessing dumps generated with pipeline in this repository
-is available at https://beyond-all-reason.github.io/data-processing/.
+Data dumps are available as [Parquet](https://parquet.apache.org/docs/overview/)
+under:
+
+- https://data-marts.beyondallreason.dev/matches.parquet
+- https://data-marts.beyondallreason.dev/match_players.parquet
+
+and Compressed CSV file under:
+
+- https://data-marts.beyondallreason.dev/matches.csv.gz
+- https://data-marts.beyondallreason.dev/match_players.csv.gz
+
+More documentation is available at
+https://beyond-all-reason.github.io/data-processing/.
+
+### Usage examples
+
+It's easy to load data into Jupyter Notebook or Google Colab, for example:
+[plot the number of matches over time](https://colab.research.google.com/drive/1WCDW5v_19ZIk-B-FU-XagdUKssdfIeU_?usp=sharing)
+using [Polars](https://pola.rs/).
+
+Given that datasets are available under URL, you can even use [one of the Web
+UIs](https://github.com/davidgasquez/awesome-duckdb?tab=readme-ov-file#web-clients)
+built on [DuckDB-Wasm](https://github.com/duckdb/duckdb-wasm) to run query
+entirely in the browser, for example: [compute number of games per type per month](https://sekuel.com/playground/?q=V0lUSAogIGJhc2UgQVMgKAogICAgU0VMRUNUCiAgICAgIGdhbWVfdHlwZSwKICAgICAgc3RyZnRpbWUoc3RhcnRfdGltZSwgJyVZLSVtJykgQVMgbW9uLAogICAgICBjb3VudCgqKSBBUyBudW0KICAgIEZST00gJ2h0dHBzOi8vZGF0YS1tYXJ0cy5iZXlvbmRhbGxyZWFzb24uZGV2L21hdGNoZXMucGFycXVldCcKICAgIFdIRVJFIHN0YXJ0X3RpbWUgPj0gJzIwMjMtMTAtMDEnCiAgICAgIEFORCBzdGFydF90aW1lIDwgJzIwMjQtMDktMDEnCiAgICBHUk9VUCBCWSAxLCAyCiAgICBPUkRFUiBCWSAxLCAyCiAgKQpQSVZPVCBiYXNlCk9OIG1vbgpVU0lORyBzdW0obnVtKQpPUkRFUiBCWSBnYW1lX3R5cGU7Cg%3D%3D)
 
 ## Development
 
