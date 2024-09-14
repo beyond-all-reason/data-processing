@@ -9,7 +9,6 @@ SELECT
   start_time,
   map,
   team_count,
-  team_size,
   game_type,
   newtid.new_team_id AS winning_team,
   game_duration,

@@ -18,9 +18,6 @@ models:
       - name: team_count
         data_tests:
           - not_null
-      - name: team_size
-        data_tests:
-          - not_null
       - name: game_type
         data_tests:
           - not_null

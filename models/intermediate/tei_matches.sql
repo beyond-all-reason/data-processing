@@ -3,7 +3,6 @@ SELECT
   started AS start_time,
   map,
   team_count,
-  team_size,
   game_type,
   winning_team,
   game_duration,
