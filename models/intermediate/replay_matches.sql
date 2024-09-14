@@ -7,3 +7,4 @@ SELECT
 FROM {{ source('pgdumps', 'replay_demos') }} AS d
 INNER JOIN {{ source('pgdumps', 'replay_maps') }} AS m
   ON d.mapId = m.id
+WHERE d.gameEndedNormally

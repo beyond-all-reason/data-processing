@@ -9,3 +9,5 @@ SELECT
 FROM {{ source('pgdumps', 'replay_ally_teams') }} AS allayteams
 INNER JOIN {{ source('pgdumps', 'replay_players') }} AS p
   ON allayteams.id = p.allyTeamId
+INNER JOIN {{ ref('replay_matches') }} AS rm
+  ON allayteams.demoId = rm.replay_id
