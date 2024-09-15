@@ -24,6 +24,8 @@ models:
       - name: is_ranked
         data_tests:
           - not_null
+      - name: processed
+          - not_null
 
   - name: tei_match_memberships
     data_tests:
@@ -60,14 +62,19 @@ models:
       - name: replay_map
         data_tests:
           - not_null
+      - name: replay_winning_team
+        data_tests:
+          - not_null
 
   - name: replay_players
     columns:
       - name: replay_id
         data_tests:
           - not_null
+        # user_id Can be null :(( because of https://github.com/beyond-all-reason/teiserver/issues/438
       - name: user_id
-        # Can be null :(( because of https://github.com/beyond-all-reason/teiserver/issues/438
+      - name: replay_old_skill
+      - name: replay_old_uncertainty
       - name: faction
         data_tests:
           - not_null
