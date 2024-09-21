@@ -4,7 +4,8 @@ Repository for [ETL](https://en.wikipedia.org/wiki/Extract%2C_transform%2C_load)
 workflow that processes BAR data.
 
 It periodically produces public dumps of the matches data combining information
-from teiserver and replays database.
+from teiserver and replays database. Check out [Gallery](#gallery) section to
+see how community uses this data.
 
 ## Data access
 
@@ -34,6 +35,22 @@ Given that datasets are available under URL, you can even use [one of the Web
 UIs](https://github.com/davidgasquez/awesome-duckdb?tab=readme-ov-file#web-clients)
 built on [DuckDB-Wasm](https://github.com/duckdb/duckdb-wasm) to run query
 entirely in the browser, for example: [compute number of games per type per month](https://sekuel.com/playground/?q=V0lUSAogIGJhc2UgQVMgKAogICAgU0VMRUNUCiAgICAgIGdhbWVfdHlwZSwKICAgICAgc3RyZnRpbWUoc3RhcnRfdGltZSwgJyVZLSVtJykgQVMgbW9uLAogICAgICBjb3VudCgqKSBBUyBudW0KICAgIEZST00gJ2h0dHBzOi8vZGF0YS1tYXJ0cy5iZXlvbmRhbGxyZWFzb24uZGV2L21hdGNoZXMucGFycXVldCcKICAgIFdIRVJFIHN0YXJ0X3RpbWUgPj0gJzIwMjMtMTAtMDEnCiAgICAgIEFORCBzdGFydF90aW1lIDwgJzIwMjQtMDktMDEnCiAgICBHUk9VUCBCWSAxLCAyCiAgICBPUkRFUiBCWSAxLCAyCiAgKQpQSVZPVCBiYXNlCk9OIG1vbgpVU0lORyBzdW0obnVtKQpPUkRFUiBCWSBnYW1lX3R5cGU7Cg%3D%3D)
+
+## Gallery
+
+Below we want to link some cool examples of how people in the community are
+using the data dumps. If you've created something please share with us on
+Discord or here in issues!
+
+- [@Atlasfailed](https://github.com/Atlasfailed) shared reports from his
+  [personal_skill_analysis](https://github.com/Atlasfailed/personal_skill_analysis)
+  project:
+  - [personal stats](https://atlasfailed.github.io/personal_skill_analysis/player_134300_analysis.html)
+  - [players skill progression](https://atlasfailed.github.io/personal_skill_analysis/player_analysis_report.html)
+  - [players retention](https://atlasfailed.github.io/personal_skill_analysis/player_analysis_report.html)
+- [@Dazazzell](https://github.com/Dazazzell/barmaps) created a live dashboard
+  https://dazazzell.github.io/barmaps/ ([source](https://github.com/Dazazzell/barmaps))
+  that shows map popularity stats for the last 60 days.
 
 ## Development
 
