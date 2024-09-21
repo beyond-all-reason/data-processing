@@ -72,6 +72,22 @@ FROM 'data_source/prod/teiserver_game_rating_logs.parquet'
 INNER JOIN sample_matches USING (match_id)
 ORDER BY id;
 
+CREATE TEMP TABLE teiserver_users AS
+WITH
+  users AS (
+    SELECT DISTINCT user_id FROM teiserver_battle_match_memberships
+    FULL OUTER JOIN teiserver_game_rating_logs USING (user_id)
+  )
+SELECT
+  -- there is ofc many more columns, we just pull in minimal set because it's
+  -- sensitive data
+  id,
+  name
+FROM users AS u
+INNER JOIN 'data_source/prod/teiserver_users.parquet' AS tu
+  ON u.user_id = tu.id
+ORDER BY id;
+
 CREATE TEMP TABLE replay_demos AS
 SELECT rd.*
 FROM 'data_source/prod/replay_demos.parquet' AS rd
@@ -101,6 +117,7 @@ ORDER BY p.id;
 copy teiserver_battle_matches to 'data_source/dev/teiserver_battle_matches.parquet' (format parquet, codec zstd);
 copy teiserver_battle_match_memberships to 'data_source/dev/teiserver_battle_match_memberships.parquet' (format parquet, codec zstd);
 copy teiserver_game_rating_logs to 'data_source/dev/teiserver_game_rating_logs.parquet' (format parquet, codec zstd);
+copy teiserver_users to 'data_source/dev/teiserver_users.parquet' (format parquet, codec zstd);
 copy replay_demos to 'data_source/dev/replay_demos.parquet' (format parquet, codec zstd);
 copy replay_ally_teams to 'data_source/dev/replay_ally_teams.parquet' (format parquet, codec zstd);
 copy replay_maps to 'data_source/dev/replay_maps.parquet' (format parquet, codec zstd);
