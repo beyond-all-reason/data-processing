@@ -88,3 +88,16 @@ models:
           Faction that was used, important note is that it can be null, and is
           also the faction selected in lobby. In additon, faction like Legion
           are not recognized here. Use with caution, not high quality field.
+
+  - name: players
+    description: List of active players
+    columns:
+      - name: user_id
+        description: Teiserver account id of the user
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        description: Current user selected name
+          - unique
+          - not_null
