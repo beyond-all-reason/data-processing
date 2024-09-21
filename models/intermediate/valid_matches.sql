@@ -4,7 +4,7 @@ WITH
     SELECT
       match_id,
       bool_or(team_id IS null) AS has_null_team_id
-    FROM {{ ref("tei_players") }}
+    FROM {{ ref("tei_match_players") }}
     GROUP BY match_id
   ),
   -- removes ~75 matches on top of the null_team_id table
@@ -14,7 +14,7 @@ WITH
         SELECT
           match_id,
           team_id
-        FROM {{ ref("tei_players") }}
+        FROM {{ ref("tei_match_players") }}
         WHERE team_id IS NOT null
         GROUP BY match_id, team_id
       ),

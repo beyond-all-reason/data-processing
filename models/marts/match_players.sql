@@ -15,14 +15,14 @@ SELECT
   new_skill,
   new_uncertainty,
   faction
-FROM {{ ref("tei_players") }}
+FROM {{ ref("tei_match_players") }}
 INNER JOIN valid
   USING (match_id)
 LEFT JOIN {{ ref("tei_replay_map") }}
   USING (match_id)
 LEFT JOIN {{ ref("replay_players") }}
   USING (replay_id, user_id)
-LEFT JOIN {{ ref("tei_players_new_team_id") }}
+LEFT JOIN {{ ref("tei_match_players_new_team_id") }}
   USING (match_id, team_id)
 ORDER BY
   match_id, team_id, user_id

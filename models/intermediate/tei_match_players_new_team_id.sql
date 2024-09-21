@@ -3,7 +3,7 @@ WITH
     SELECT
       match_id,
       team_id
-    FROM {{ ref("tei_players") }}
+    FROM {{ ref("tei_match_players") }}
     GROUP BY match_id, team_id
   )
 SELECT

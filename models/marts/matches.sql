@@ -22,7 +22,7 @@ INNER JOIN valid
   USING (match_id)
 LEFT JOIN {{ ref("tei_replay_map") }}
   USING (match_id)
-LEFT JOIN {{ ref("tei_players_new_team_id") }} AS newtid
+LEFT JOIN {{ ref("tei_match_players_new_team_id") }} AS newtid
   ON tm.match_id = newtid.match_id
     AND tm.winning_team = newtid.team_id
 LEFT JOIN {{ ref("replay_matches") }}

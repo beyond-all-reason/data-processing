@@ -37,7 +37,7 @@ models:
           - accepted_values:
               values: [True]
 
-  - name: tei_players
+  - name: tei_match_players
     description: "Teiserver players for match"
     columns:
       - name: match_id

@@ -23,7 +23,7 @@ WITH
       match_id,
       min(user_id) AS min_user_id,
       max(user_id) AS max_user_id
-    FROM {{ ref("tei_players") }}
+    FROM {{ ref("tei_match_players") }}
     GROUP BY match_id
   ),
   matches AS (
