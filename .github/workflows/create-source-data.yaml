@@ -37,11 +37,15 @@ jobs:
           preemptible: true
           ephemeral: true
           boot_disk_type: pd-ssd
-          disk_size: 70GB
+          disk_size: 150GB
   export-pgdumps:
     needs: create-runner
     runs-on: ${{ needs.create-runner.outputs.label }}
     steps:
+      - name: Install Ops Agent
+        run: |
+          curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+          sudo bash add-google-cloud-ops-agent-repo.sh --also-install
       # We are running on barebones VM, so there is more scripting involved
       # then needed if we were running on standard GitHub Actions runner.
       - name: Checkout source
