@@ -46,8 +46,11 @@ jobs:
         run: |
           curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
           sudo bash add-google-cloud-ops-agent-repo.sh --also-install
-      - name: Apt update
-        run: sudo apt-get update
+      - name: Apt clean and update
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo apt-get update
       # We are running on barebones VM, so there is more scripting involved
       # then needed if we were running on standard GitHub Actions runner.
       - name: Install rclone
