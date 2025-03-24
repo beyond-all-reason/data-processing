@@ -1,8 +1,7 @@
 name: Run DBT model on prod
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 11 * * 2,6'
+  workflow_call:
 jobs:
   create-runner:
     permissions:
@@ -26,9 +25,10 @@ jobs:
           service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
       - name: Create Runner on GCP
         id: create-runner
-        uses: related-sciences/gce-github-runner@2622dd9ed9e399ae7db9d87f677d14bf128ab768
+        uses: related-sciences/gce-github-runner@315103483ed108ba74207893d8ad328b93b2c07e
         with:
           token: ${{ steps.app-token.outputs.token }}
+          vm_name_prefix: gh-create-dumps
           image_project: ubuntu-os-cloud
           image_family: ubuntu-2404-lts-amd64
           machine_zone: europe-west4-b
