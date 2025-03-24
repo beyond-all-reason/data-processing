@@ -9,6 +9,6 @@ SELECT
   user_id,
   name
 FROM active_players
-INNER JOIN {{ ref("tei_players")}}
+INNER JOIN {{ ref("tei_players") }}
   USING (user_id)
 ORDER BY user_id

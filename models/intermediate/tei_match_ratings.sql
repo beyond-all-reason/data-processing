@@ -23,10 +23,22 @@ WITH
 SELECT
   match_id,
   user_id,
-  first(old_skill ORDER BY old_skill * win_ord) AS old_skill,
-  first(old_uncertainty ORDER BY old_skill * win_ord) AS old_uncertainty,
-  last(new_skill ORDER BY old_skill * win_ord) AS new_skill,
-  last(new_uncertainty ORDER BY old_skill * win_ord) AS new_uncertainty,
+  first(
+    old_skill
+    ORDER BY old_skill * win_ord
+  ) AS old_skill,
+  first(
+    old_uncertainty
+    ORDER BY old_skill * win_ord
+  ) AS old_uncertainty,
+  last(
+    new_skill
+    ORDER BY old_skill * win_ord
+  ) AS new_skill,
+  last(
+    new_uncertainty
+    ORDER BY old_skill * win_ord
+  ) AS new_uncertainty,
   abs(sum(win_ord)) = count(*) AS all_win_same -- Just for testing
 FROM ratings
 GROUP BY match_id, user_id

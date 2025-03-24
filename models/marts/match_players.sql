@@ -2,7 +2,8 @@
 
 WITH
   valid AS (
-    SELECT match_id FROM {{ ref("valid_matches") }} WHERE is_valid
+    SELECT match_id FROM {{ ref("valid_matches") }}
+    WHERE is_valid
   )
 SELECT
   match_id,
