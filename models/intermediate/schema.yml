@@ -72,7 +72,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ["Cortex", "Armada", "Unknown", "Random"]
+              values: ["Cortex", "Armada", "Legion", "Unknown", "Random"]
 
   - name: tei_replay_map
     description: Mapping between teiserver matches and replay ids
