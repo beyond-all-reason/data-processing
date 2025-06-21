@@ -67,7 +67,7 @@ jobs:
       - name: Setup DuckDB
         run: |
           sudo apt-get install --yes unzip
-          curl -L https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip > duckdb.zip
+          curl -L https://github.com/duckdb/duckdb/releases/download/v1.3.1/duckdb_cli-linux-amd64.zip > duckdb.zip
           unzip duckdb.zip duckdb
           sudo mv duckdb /usr/local/bin
       - name: Setup Python
@@ -85,7 +85,7 @@ jobs:
           cd src && source .venv/bin/activate
           dbt build -t prod
       - name: Generate formats
-        run: cd src && duckdb < scripts/build_more_formats.sql
+        run: cd src && duckdb -f scripts/build_more_formats.sql
       - name: Upload dumps
         run: rclone sync --exclude .gitkeep src/data_export/ :s3:$R2_DATA_MARTS_BUCKET
         env:
