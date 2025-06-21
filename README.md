@@ -75,6 +75,8 @@ code before making a commit
 pre-commit install
 ```
 
+Note: the project is setup using [uv](https://docs.astral.sh/uv) so you can use it too and need to use it if you plan to modify dependencies.
+
 ### Usage
 
 `data_source/dev` contains a small sample of the full data sources used to

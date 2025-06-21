@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: 3.13
-          cache: pip
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          version: "0.7.13"
+          activate-environment: true
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
       - name: Run lint checks
         run: pre-commit run --all-files
       - name: Run dbt

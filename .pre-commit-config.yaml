@@ -14,3 +14,8 @@ repos:
     language: system
     require_serial: true
     types_or: [sql]
+- repo: https://github.com/astral-sh/uv-pre-commit
+  # uv version.
+  rev: 0.7.13
+  hooks:
+    - id: uv-export
