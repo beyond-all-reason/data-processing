@@ -7,7 +7,8 @@ WITH
   )
 SELECT
   user_id,
-  name
+  name,
+  country
 FROM active_players
 INNER JOIN {{ ref("tei_players") }}
   USING (user_id)

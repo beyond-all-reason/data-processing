@@ -114,4 +114,5 @@ sources:
       - name: teiserver_battle_match_memberships
       - name: teiserver_battle_matches
       - name: teiserver_game_rating_logs
+      - name: teiserver_user_stats
       - name: teiserver_users

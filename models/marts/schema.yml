@@ -101,3 +101,5 @@ models:
         description: Current user selected name
           - unique
           - not_null
+      - name: country
+        description: Country code of the player, e.g. PL, US, or NULL if hidden by player
