@@ -13,6 +13,11 @@ jobs:
         with:
           version: "0.7.13"
           activate-environment: true
+      - name: pre-commit cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit/
+          key: pre-commit-4-${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Install the project
         run: uv sync --locked --all-extras --dev
       - name: Run lint checks
