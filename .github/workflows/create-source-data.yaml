@@ -59,12 +59,12 @@ jobs:
           cd ..
       - name: Set up PostgreSQL
         run: |
-          sudo apt-get --yes install postgresql
-          while ! pg_isready; do
+          sudo apt-get --yes install podman
+          podman run --rm --name pg -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=12345 -d docker.io/library/postgres:17
+          while ! podman exec pg pg_isready; do
               echo "waiting for postgres..."
               sleep 1
           done
-          sudo -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
       - name: Setup DuckDB
         run: |
           sudo apt-get install --yes unzip
@@ -78,9 +78,9 @@ jobs:
           function restore {
             local BACKUP="$(gcloud storage ls gs://$1 | sort -r | head -n 1)"
             gcloud storage cp "$BACKUP" .
-            psql -c "CREATE DATABASE $2;"
+            podman exec pg psql -U postgres -c "CREATE DATABASE $2;"
             time zstdcat "$(basename "$BACKUP")" \
-              | pg_restore -d postgres --clean --create --no-owner --no-privileges
+              | podman exec -i pg pg_restore -U postgres -d postgres --clean --create --no-owner --no-privileges
           }
 
           restore "$REPLAY_BACKUPS_GCS_BUCKET" bar &
