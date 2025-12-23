@@ -25,7 +25,7 @@ jobs:
           service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
       - name: Create Runner on GCP
         id: create-runner
-        uses: related-sciences/gce-github-runner@315103483ed108ba74207893d8ad328b93b2c07e
+        uses: related-sciences/gce-github-runner@ab5ba6e5baaf05b344863802d7e6d57ee69f2fd3
         with:
           token: ${{ steps.app-token.outputs.token }}
           vm_name_prefix: gh-create-dumps
