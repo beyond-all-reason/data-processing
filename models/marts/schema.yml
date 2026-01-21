@@ -103,3 +103,40 @@ models:
           - not_null
       - name: country
         description: Country code of the player, e.g. PL, US, or NULL if hidden by player
+
+  - name: player_skill_snapshot
+    description: Latest OpenSkill snapshot per player and game type.
+    columns:
+      - name: id
+        description: Teiserver account id of the user
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        description: Current user selected name
+      - name: duelSkill
+        description: Latest duel skill (mu)
+      - name: duelSkillUn
+        description: Latest duel uncertainty (sigma)
+      - name: ffaSkill
+        description: Latest FFA skill (mu)
+      - name: ffaSkillUn
+        description: Latest FFA uncertainty (sigma)
+      - name: teamSkill
+        description: Latest large team skill (mu)
+      - name: teamSkillUn
+        description: Latest large team uncertainty (sigma)
+      - name: lastDuel
+        description: Time of latest duel match for this user
+      - name: lastFFA
+        description: Time of latest FFA match for this user
+      - name: lastTeam
+        description: Time of latest large team match for this user
+      - name: countryCode
+        description: Country code of the player, e.g. PL, US, or NULL if hidden by player
+      - name: lastSmallTeam
+        description: Time of latest small team match for this user
+      - name: smallTeamSkill
+        description: Latest small team skill (mu)
+      - name: smallTeamSkillUn
+        description: Latest small team uncertainty (sigma)
