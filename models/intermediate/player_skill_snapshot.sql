@@ -25,25 +25,29 @@ WITH
       country AS countryCode
     FROM {{ ref("players") }}
   ),
-  joined AS (
+  joined_base AS (
     SELECT
       m.start_time,
       mp.user_id,
       p.name,
       p.countryCode,
-      CASE
-        WHEN m.game_type_l LIKE '%duel%' THEN 'duel'
-        WHEN m.game_type_l LIKE '%ffa%' THEN 'ffa'
-        WHEN m.game_type_l LIKE '%large%' THEN 'large'
-        WHEN m.game_type_l LIKE '%small%' THEN 'small'
-      END AS game_type,
       mp.new_skill,
-      mp.new_uncertainty
+      mp.new_uncertainty,
+      m.game_type_l
     FROM match_players AS mp
-    JOIN matches AS m
-      ON mp.match_id = m.match_id
-    JOIN players AS p
-      ON mp.user_id = p.user_id
+    INNER JOIN matches AS m ON mp.match_id = m.match_id
+    INNER JOIN players AS p ON mp.user_id = p.user_id
+  ),
+  joined AS (
+    SELECT
+      joined_base.*,
+      CASE
+        WHEN joined_base.game_type_l LIKE '%duel%' THEN 'duel'
+        WHEN joined_base.game_type_l LIKE '%ffa%' THEN 'ffa'
+        WHEN joined_base.game_type_l LIKE '%large%' THEN 'large'
+        WHEN joined_base.game_type_l LIKE '%small%' THEN 'small'
+      END AS game_type
+    FROM joined_base
   )
 SELECT
   user_id AS id,
