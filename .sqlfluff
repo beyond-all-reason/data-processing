@@ -13,7 +13,7 @@ processes = 4
 tab_space_size = 2
 indented_joins = False
 indented_using_on = True
-allow_implicit_indents = True
+implicit_indents = allow
 indented_ctes = True
 
 [sqlfluff:rules:capitalisation.keywords]
