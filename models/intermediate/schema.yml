@@ -35,7 +35,8 @@ models:
       - name: all_win_same
         data_tests:
           - accepted_values:
-              values: [True]
+              arguments:
+                values: [True]
 
   - name: tei_match_players
     description: "Teiserver players for match"
