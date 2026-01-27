@@ -13,6 +13,11 @@ jobs:
         with:
           version: "0.7.13"
           activate-environment: true
+      - name: Setup DuckDB
+        run: |
+          curl -L https://github.com/duckdb/duckdb/releases/download/v1.3.1/duckdb_cli-linux-amd64.zip > duckdb.zip
+          unzip duckdb.zip duckdb
+          sudo mv duckdb /usr/local/bin
       - name: pre-commit cache
         uses: actions/cache@v4
         with:
@@ -26,3 +31,5 @@ jobs:
         run: dbt run -t dev
       - name: Test dbt
         run: dbt test -t dev
+      - name: Test extra formats export
+        run: duckdb -f scripts/build_more_formats.sql
