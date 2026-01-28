@@ -18,5 +18,8 @@ indented_ctes = True
 [sqlfluff:rules:capitalisation.keywords]
 capitalisation_policy = upper
 
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
 [sqlfluff:rules:capitalisation.identifiers]
 unquoted_identifiers_policy = aliases

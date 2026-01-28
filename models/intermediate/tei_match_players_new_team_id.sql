@@ -9,7 +9,7 @@ WITH
 SELECT
   match_id,
   team_id,
-  CAST((ROW_NUMBER() OVER (
+  cast((row_number() OVER (
     PARTITION BY match_id
     ORDER BY team_id ASC
   )) - 1 AS INTEGER) AS new_team_id
