@@ -14,7 +14,7 @@ WITH
     SELECT
       user_id,
       name,
-      country AS countryCode
+      country AS country_code
     FROM {{ ref("players") }}
   ),
   joined AS (
@@ -38,18 +38,18 @@ WITH
   aggregated AS (
     SELECT
       user_id,
-      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'duel') AS duelSkill,
-      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'duel') AS duelSkillUn,
-      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'ffa') AS ffaSkill,
-      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'ffa') AS ffaSkillUn,
-      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'large') AS teamSkill,
-      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'large') AS teamSkillUn,
-      arg_max(start_time, start_time) FILTER (WHERE game_type = 'duel') AS lastDuel,
-      arg_max(start_time, start_time) FILTER (WHERE game_type = 'ffa') AS lastFFA,
-      arg_max(start_time, start_time) FILTER (WHERE game_type = 'large') AS lastTeam,
-      arg_max(start_time, start_time) FILTER (WHERE game_type = 'small') AS lastSmallTeam,
-      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'small') AS smallTeamSkill,
-      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'small') AS smallTeamSkillUn
+      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'duel') AS duel_skill,
+      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'duel') AS duel_skill_un,
+      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'ffa') AS ffa_skill,
+      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'ffa') AS ffa_skill_un,
+      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'large') AS team_skill,
+      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'large') AS team_skill_un,
+      arg_max(start_time, start_time) FILTER (WHERE game_type = 'duel') AS last_duel,
+      arg_max(start_time, start_time) FILTER (WHERE game_type = 'ffa') AS last_ffa,
+      arg_max(start_time, start_time) FILTER (WHERE game_type = 'large') AS last_team,
+      arg_max(start_time, start_time) FILTER (WHERE game_type = 'small') AS last_small_team,
+      arg_max(new_skill, start_time) FILTER (WHERE game_type = 'small') AS small_team_skill,
+      arg_max(new_uncertainty, start_time) FILTER (WHERE game_type = 'small') AS small_team_skill_un
     FROM joined
     WHERE game_type IS NOT null
     GROUP BY user_id
@@ -57,19 +57,19 @@ WITH
 SELECT
   a.user_id AS id,
   p.name,
-  a.duelSkill,
-  a.duelSkillUn,
-  a.ffaSkill,
-  a.ffaSkillUn,
-  a.teamSkill,
-  a.teamSkillUn,
-  a.lastDuel,
-  a.lastFFA,
-  a.lastTeam,
-  p.countryCode,
-  a.lastSmallTeam,
-  a.smallTeamSkill,
-  a.smallTeamSkillUn
+  a.duel_skill,
+  a.duel_skill_un,
+  a.ffa_skill,
+  a.ffa_skill_un,
+  a.team_skill,
+  a.team_skill_un,
+  a.last_duel,
+  a.last_ffa,
+  a.last_team,
+  p.country_code,
+  a.last_small_team,
+  a.small_team_skill,
+  a.small_team_skill_un
 FROM aggregated AS a
 INNER JOIN players AS p ON a.user_id = p.user_id
 ORDER BY a.user_id
