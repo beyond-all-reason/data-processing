@@ -123,8 +123,61 @@ models:
       - name: name
         data_type: string
         description: Current user selected name
+        data_tests:
           - unique
           - not_null
       - name: country
         data_type: string
         description: Country code of the player, e.g. PL, US, or NULL if hidden by player
+
+  - name: player_skill_snapshot
+    description: Latest OpenSkill snapshot per player and game type.
+    columns:
+      - name: id
+        data_type: bigint
+        description: Teiserver account id of the user
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        data_type: string
+        description: Current user selected name
+      - name: duel_skill
+        data_type: float
+        description: Latest duel skill (mu)
+      - name: duel_skill_un
+        data_type: float
+        description: Latest duel uncertainty (sigma)
+      - name: ffa_skill
+        data_type: float
+        description: Latest FFA skill (mu)
+      - name: ffa_skill_un
+        data_type: float
+        description: Latest FFA uncertainty (sigma)
+      - name: team_skill
+        data_type: float
+        description: Latest large team skill (mu)
+      - name: team_skill_un
+        data_type: float
+        description: Latest large team uncertainty (sigma)
+      - name: last_duel
+        data_type: timestamp
+        description: Time of latest duel match for this user
+      - name: last_ffa
+        data_type: timestamp
+        description: Time of latest FFA match for this user
+      - name: last_team
+        data_type: timestamp
+        description: Time of latest large team match for this user
+      - name: country_code
+        data_type: string
+        description: Country code of the player, e.g. PL, US, or NULL if hidden by player
+      - name: last_small_team
+        data_type: timestamp
+        description: Time of latest small team match for this user
+      - name: small_team_skill
+        data_type: float
+        description: Latest small team skill (mu)
+      - name: small_team_skill_un
+        data_type: float
+        description: Latest small team uncertainty (sigma)
