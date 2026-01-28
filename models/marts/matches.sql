@@ -11,7 +11,7 @@ SELECT
   map,
   team_count,
   game_type,
-  newtid.new_team_id AS winning_team,
+  winning_team,
   game_duration,
   is_ranked,
   replay_id,

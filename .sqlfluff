@@ -3,7 +3,6 @@ dialect = duckdb
 templater = jinja
 max_line_length = 100
 exclude_rules =
-  capitalisation.identifiers,
   layout.cte_newline,
   references.qualification,
   structure.using,
@@ -13,8 +12,14 @@ processes = 4
 tab_space_size = 2
 indented_joins = False
 indented_using_on = True
-allow_implicit_indents = True
+implicit_indents = allow
 indented_ctes = True
 
 [sqlfluff:rules:capitalisation.keywords]
 capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.identifiers]
+unquoted_identifiers_policy = aliases

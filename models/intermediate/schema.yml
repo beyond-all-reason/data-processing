@@ -28,14 +28,16 @@ models:
   - name: tei_match_memberships
     data_tests:
       - unique:
-          column_name: "(match_id || '-' || user_id)"
+          arguments:
+            column_name: "(match_id || '-' || user_id)"
 
   - name: tei_match_ratings
     columns:
       - name: all_win_same
         data_tests:
           - accepted_values:
-              values: [True]
+              arguments:
+                values: [True]
 
   - name: tei_match_players
     description: "Teiserver players for match"
@@ -72,7 +74,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ["Cortex", "Armada", "Legion", "Unknown", "Random"]
+              arguments:
+                values: ["Cortex", "Armada", "Legion", "Unknown", "Random"]
 
   - name: tei_replay_map
     description: Mapping between teiserver matches and replay ids

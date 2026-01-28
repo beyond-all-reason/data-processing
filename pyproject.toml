@@ -5,9 +5,9 @@ description = " SQL pipelines for processing BAR data"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "dbt-core>=1.10.2",
-    "dbt-duckdb>=1.9.3",
-    "duckdb>=1.3.1",
-    "pre-commit>=4.2.0",
-    "sqlfluff>=3.4.1",
+    "dbt-core>=1.11.2",
+    "dbt-duckdb>=1.10.0",
+    "duckdb>=1.4.4",
+    "pre-commit>=4.5.1",
+    "sqlfluff>=4.0.0",
 ]

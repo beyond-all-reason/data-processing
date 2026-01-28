@@ -7,12 +7,17 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
-          version: "0.7.13"
+          version: "0.9.27"
           activate-environment: true
+      - name: Setup DuckDB
+        run: |
+          curl -L https://install.duckdb.org/v1.4.4/duckdb_cli-linux-amd64.zip > duckdb.zip
+          unzip duckdb.zip duckdb
+          sudo mv duckdb /usr/local/bin
       - name: pre-commit cache
         uses: actions/cache@v4
         with:
@@ -26,3 +31,5 @@ jobs:
         run: dbt run -t dev
       - name: Test dbt
         run: dbt test -t dev
+      - name: Test extra formats export
+        run: duckdb -f scripts/build_more_formats.sql
