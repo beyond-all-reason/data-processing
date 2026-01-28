@@ -19,3 +19,5 @@ models:
       +options:
         codec: 'zstd'
         format: 'parquet'
+      +contract:
+        enforced: true

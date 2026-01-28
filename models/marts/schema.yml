@@ -7,11 +7,13 @@ models:
       with replays data.
     columns:
       - name: match_id
+        data_type: bigint
         description: Unique teiserver side match id
         data_tests:
-          - unique
           - not_null
+          - unique
       - name: replay_id
+        data_type: string
         description: |
           If for a given match we found replay, it contains the replay id used
           for replay identification e.g. view it on the website:
@@ -19,36 +21,46 @@ models:
         data_tests:
           - unique
       - name: start_time
+        data_type: timestamp
         description: UTC time of when the match started
         data_tests:
           - not_null
       - name: map
+        data_type: string
         description: Name of the map
         data_tests:
           - not_null
       - name: team_count
+        data_type: int
         description: Number of teams that palyed in the game
         data_tests:
           - not_null
       - name: game_type
+        data_type: string
         description: Type of the game, it can be Team FFA, Raptors, Duel, Large team etc
         data_tests:
           - not_null
       - name: winning_team
+        data_type: int
         description: The team id of the team that won
         data_tests:
           - not_null
       - name: game_duration
+        data_type: int
         description: Duration of the game in seconds
       - name: is_ranked
+        data_type: bool
         description: Whatever the game was ranked or not
         data_tests:
           - not_null
       - name: engine
+        data_type: string
         description: Game engine version that was used
       - name: game_version
+        data_type: string
         description: Game version that was used
       - name: is_public
+        data_type: bool
         description: |
           Whatever it was a public match or not, pulic dumps contain only public
           matches.
@@ -59,31 +71,41 @@ models:
     description: Contains all the players that played a particular match
     columns:
       - name: match_id
+        data_type: bigint
         description: Match id od the played match
         data_tests:
           - not_null
       - name: team_id
+        data_type: int
         description: Team id, all team ids fit in the [0, team_count).
         data_tests:
           - not_null
       - name: user_id
+        data_type: bigint
         description: Teiserver account id of the user
         data_tests:
           - not_null
       - name: party_id
+        data_type: string
         description: |
           If the user was part of a party, contains the unique id of the party
       - name: left_after
+        data_type: int
         description: Can be null, duration in seconds after player left the game
       - name: old_skill
+        data_type: float
         description: Skill (mu) from before the game
       - name: old_uncertainty
+        data_type: float
         description: Uncertainty (sigma) from before the game
       - name: new_skill
+        data_type: float
         description: Skill (mu) after the game
       - name: new_uncertainty
+        data_type: float
         description: Uncertainty (sigma) after the game
       - name: faction
+        data_type: string
         description: |
           Faction that was used, important note is that it can be null, and is
           also the faction selected in lobby. In additon, faction like Legion
@@ -93,13 +115,16 @@ models:
     description: List of active players
     columns:
       - name: user_id
+        data_type: bigint
         description: Teiserver account id of the user
         data_tests:
           - unique
           - not_null
       - name: name
+        data_type: string
         description: Current user selected name
           - unique
           - not_null
       - name: country
+        data_type: string
         description: Country code of the player, e.g. PL, US, or NULL if hidden by player
