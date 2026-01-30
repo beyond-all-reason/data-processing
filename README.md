@@ -17,11 +17,14 @@ under:
 - https://data-marts.beyondallreason.dev/players.parquet
 - https://data-marts.beyondallreason.dev/player_skill_snapshot.parquet
 
-and Compressed CSV file under:
+and CSV files available at:
 
+Compressed:
 - https://data-marts.beyondallreason.dev/matches.csv.gz
 - https://data-marts.beyondallreason.dev/match_players.csv.gz
 - https://data-marts.beyondallreason.dev/players.csv.gz
+
+Uncompressed:
 - https://data-marts.beyondallreason.dev/player_skill_snapshot.csv
 
 More documentation is available at
