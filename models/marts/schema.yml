@@ -20,6 +20,10 @@ models:
           https://www.beyondallreason.info/replays?gameId={replay_id}
         data_tests:
           - unique
+      - name: replay_file_name
+        data_type: string
+        description: |
+          Object name of the replay demo on BAR's public storage.
       - name: start_time
         data_type: timestamp
         description: UTC time of when the match started

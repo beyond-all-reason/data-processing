@@ -56,6 +56,9 @@ models:
       - name: replay_id
         data_tests:
           - unique
+      - name: replay_file_name
+        data_tests:
+          - not_null
       - name: replay_start_time
         data_tests:
           - not_null
