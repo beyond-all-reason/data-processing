@@ -1,5 +1,6 @@
 SELECT
   d.id AS replay_id,
+  d.fileName AS replay_file_name,
   m.scriptName AS replay_map,
   d.engineVersion AS engine,
   d.gameVersion AS game_version,

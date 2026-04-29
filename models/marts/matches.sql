@@ -15,6 +15,7 @@ SELECT
   game_duration,
   is_ranked,
   replay_id,
+  replay_file_name,
   engine,
   game_version,
   is_public
