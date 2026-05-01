@@ -14,15 +14,13 @@ COPY (
   INNER JOIN teiserver.public.telemetry_complex_client_event_types AS t
     ON e.event_type_id = t.id
   WHERE t.name = 'system:benchmark'
-) TO 'data_export/teiserver_benchmark_events.parquet' (FORMAT 'parquet', CODEC 'zstd', COMPRESSION_LEVEL 9);
-
-COPY (
+  UNION ALL
   SELECT e.id, e.timestamp, e.value, true AS is_anon
   FROM teiserver.public.telemetry_complex_anon_events AS e
-  INNER JOIN teiserver.public.telemetry_complex_anon_event_types AS t
+  INNER JOIN teiserver.public.telemetry_complex_client_event_types AS t
     ON e.event_type_id = t.id
   WHERE t.name = 'system:benchmark'
-) TO 'data_export/teiserver_benchmark_anon_events.parquet' (FORMAT 'parquet', CODEC 'zstd', COMPRESSION_LEVEL 9);
+) TO 'data_export/teiserver_benchmark_events.parquet' (FORMAT 'parquet', CODEC 'zstd', COMPRESSION_LEVEL 9);
 
 ATTACH 'dbname=bar' AS replay (TYPE POSTGRES, READ_ONLY);
 
