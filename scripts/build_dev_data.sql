@@ -99,11 +99,21 @@ ORDER BY user_id;
 
 CREATE TEMP TABLE teiserver_benchmark_events AS
 SELECT * FROM (
-  (SELECT * FROM 'data_source/prod/teiserver_benchmark_events.parquet'
-   WHERE is_anon = false ORDER BY id LIMIT 50)
+  (
+    SELECT *
+    FROM 'data_source/prod/teiserver_benchmark_events.parquet'
+    WHERE is_anon = false
+    ORDER BY id
+    LIMIT 50
+  )
   UNION ALL
-  (SELECT * FROM 'data_source/prod/teiserver_benchmark_events.parquet'
-   WHERE is_anon = true ORDER BY id LIMIT 50)
+  (
+    SELECT *
+    FROM 'data_source/prod/teiserver_benchmark_events.parquet'
+    WHERE is_anon = true
+    ORDER BY id
+    LIMIT 50
+  )
 )
 ORDER BY id;
 
