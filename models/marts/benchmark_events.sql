@@ -1,4 +1,4 @@
-{{ config(location='data_export/benchmark_events.parquet') }}
+{{ config(location='data_export_internal/benchmark_events.parquet') }}
 
 SELECT
   id,

@@ -16,7 +16,6 @@ under:
 - https://data-marts.beyondallreason.dev/match_players.parquet
 - https://data-marts.beyondallreason.dev/players.parquet
 - https://data-marts.beyondallreason.dev/player_skill_snapshot.parquet
-- https://data-marts.beyondallreason.dev/benchmark_events.parquet
 
 and CSV files available at:
 
