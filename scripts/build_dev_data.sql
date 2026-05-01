@@ -97,6 +97,16 @@ INNER JOIN teiserver_users AS tu
   ON tus.user_id = tu.id
 ORDER BY user_id;
 
+CREATE TEMP TABLE teiserver_benchmark_events AS
+SELECT * FROM (
+  (SELECT * FROM 'data_source/prod/teiserver_benchmark_events.parquet'
+   WHERE is_anon = false ORDER BY id LIMIT 50)
+  UNION ALL
+  (SELECT * FROM 'data_source/prod/teiserver_benchmark_events.parquet'
+   WHERE is_anon = true ORDER BY id LIMIT 50)
+)
+ORDER BY id;
+
 CREATE TEMP TABLE replay_demos AS
 SELECT rd.*
 FROM 'data_source/prod/replay_demos.parquet' AS rd
@@ -128,6 +138,7 @@ copy teiserver_battle_match_memberships to 'data_source/dev/teiserver_battle_mat
 copy teiserver_game_rating_logs to 'data_source/dev/teiserver_game_rating_logs.parquet' (format parquet, codec zstd);
 copy teiserver_users to 'data_source/dev/teiserver_users.parquet' (format parquet, codec zstd);
 copy teiserver_user_stats to 'data_source/dev/teiserver_user_stats.parquet' (format parquet, codec zstd);
+copy teiserver_benchmark_events to 'data_source/dev/teiserver_benchmark_events.parquet' (format parquet, codec zstd);
 copy replay_demos to 'data_source/dev/replay_demos.parquet' (format parquet, codec zstd);
 copy replay_ally_teams to 'data_source/dev/replay_ally_teams.parquet' (format parquet, codec zstd);
 copy replay_maps to 'data_source/dev/replay_maps.parquet' (format parquet, codec zstd);
