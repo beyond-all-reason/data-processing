@@ -122,3 +122,4 @@ sources:
       - name: teiserver_game_rating_logs
       - name: teiserver_user_stats
       - name: teiserver_users
+      - name: teiserver_benchmark_events

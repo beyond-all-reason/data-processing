@@ -185,3 +185,29 @@ models:
       - name: small_team_skill_un
         data_type: float
         description: Latest small team uncertainty (sigma)
+
+  - name: benchmark_events
+    description: |
+      Benchmark telemetry events from teiserver, unioned across registered
+      and anonymous clients. One row per event.
+    columns:
+      - name: id
+        data_type: bigint
+        description: |
+          Event id. Unique only within `is_anon` partition (each source
+          table has its own PK sequence) — not globally unique.
+        data_tests:
+          - not_null
+      - name: timestamp
+        data_type: timestamp
+        description: When the event was recorded
+        data_tests:
+          - not_null
+      - name: value
+        data_type: string
+        description: Event payload (JSON-encoded)
+      - name: is_anon
+        data_type: bool
+        description: True if the event came from an anonymous client
+        data_tests:
+          - not_null
