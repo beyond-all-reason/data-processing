@@ -70,6 +70,14 @@ models:
           matches.
         data_tests:
           - not_null
+      - name: has_deleted_player
+        data_type: bool
+        description: |
+          Whatever at least one player of the match has deleted their account.
+          Account deletion removes the player from all their past matches, so
+          for such matches `match_players` is missing some players, and teams
+          might look unbalanced. Detected using replay data, so it's NULL when
+          there is no replay for the match.
 
   - name: match_players
     description: Contains all the players that played a particular match

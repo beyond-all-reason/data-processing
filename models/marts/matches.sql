@@ -2,7 +2,10 @@
 
 WITH
   valid AS (
-    SELECT match_id FROM {{ ref("valid_matches") }}
+    SELECT
+      match_id,
+      has_deleted_player
+    FROM {{ ref("valid_matches") }}
     WHERE is_valid
   )
 SELECT
@@ -18,7 +21,8 @@ SELECT
   replay_file_name,
   engine,
   game_version,
-  is_public
+  is_public,
+  has_deleted_player
 FROM {{ ref("tei_matches") }} AS tm
 INNER JOIN valid
   USING (match_id)

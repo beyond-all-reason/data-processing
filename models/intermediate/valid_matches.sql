@@ -31,14 +31,35 @@ WITH
     FROM {{ ref("tei_matches") }}
     LEFT JOIN real_team_count
       USING (match_id)
+  ),
+  -- Deleting a teiserver account removes all of its memberships and rating
+  -- logs, so the user silently disappears from all past matches. Replays still
+  -- have them, so we can detect it there.
+  deleted_player AS (
+    SELECT
+      replay_id,
+      bool_or(rp.user_id IS NOT null AND tp.user_id IS null)
+        AS has_deleted_player
+    FROM {{ ref("replay_players") }} AS rp
+    LEFT JOIN {{ ref("tei_players") }} AS tp
+      USING (user_id)
+    GROUP BY replay_id
   )
 SELECT
   match_id,
   has_matching_team_count,
-  has_null_team_id,
-  has_matching_team_count AND NOT has_null_team_id AS is_valid
+  -- Not part of is_valid: such matches are still exported, just flagged.
+  has_deleted_player,
+  -- We need coalesce because some matches (e.g. 9078785) have no players
+  -- at all and left join makes it NULL.
+  coalesce(has_null_team_id, false) AS has_null_team_id,
+  has_matching_team_count AND NOT coalesce(has_null_team_id, false) AS is_valid
 FROM {{ ref("tei_matches") }}
 LEFT JOIN null_team_id
   USING (match_id)
 LEFT JOIN correct_team_count
   USING (match_id)
+LEFT JOIN {{ ref("tei_replay_map") }}
+  USING (match_id)
+LEFT JOIN deleted_player
+  USING (replay_id)
